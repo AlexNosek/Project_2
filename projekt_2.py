@@ -13,14 +13,12 @@ def greetings():
 
 def generating_number() -> list:
     '''
-    Generates and returns a 4-digit number in the list
-    No duplicites, no zero on the [0] index
+    Generates and returns a unique 4-digit number in the list
     '''
     print(f"I've generated a random 4 digit number for you.\n{separator}")
-    generated_number = str(set())
-    while len(generated_number) != 4 and generated_number[0] == "0":
-        generated_number = set(str(random.randrange(1111,9999)))
-    return list(generated_number)
+    generated_number = random.sample(range(1, 10), 4)  
+    generated_number = [str(digit) for digit in generated_number]  
+    return generated_number
 
 def guessing_number(generated_number) -> int:
     tries = 0
@@ -73,6 +71,7 @@ def main():
     greetings()
     #vygenerování čísla
     generated_number = generating_number()
+    print(generated_number)
     #vyhodnocení uživatelského čísla
     game = guessing_number(generated_number)
     #podle počtu pokusů
