@@ -21,6 +21,9 @@ def generating_number() -> list:
     return generated_number
 
 def guessing_number(generated_number) -> int:
+    """Evaluation of user input, where the zip function compares the generated number with the number entered by the user, 
+    if it matches the same number and position, it returns +1 to the bulls variable. 
+    If it only guesses the number, it returns +1 to the cows variable"""
     tries = 0
     while True:
         tries += 1
