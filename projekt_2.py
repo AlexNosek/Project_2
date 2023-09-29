@@ -71,7 +71,6 @@ def main():
     greetings()
     #vygenerování čísla
     generated_number = generating_number()
-    print(generated_number)
     #vyhodnocení uživatelského čísla
     game = guessing_number(generated_number)
     #podle počtu pokusů
