@@ -1,53 +1,89 @@
-"""
-projekt_2.py: druhý projekt do Engeto Online Python Akademie
-author: Alexandr Nosek 
-email: alexandr.nosek51@gmail.com
-discord: Alex Nosek  Vintag
-"""
-
 import random
 
-#pozdrav
+"""
+projekt_2.py: druhý projekt do Engeto Online Python Akademie
+author: Alexandr Nosek
+email: alexandr.nosek51@gmail.com
+discord: Vintag, Alex Nosek
+"""
+separator = "-" * 47
+
 def greetings():
-    separator = "-" * 47
-    print(f"Hi there!\n {separator}")
-    print(f"I've generated a random 4 digit number for you.\n Lets play a bulls and cows game.\n{separator}")
+    print(f"Hi there! Lets play Bulls and Cows\n{separator}")
 
+def generating_number() -> list:
+    '''
+    Generates and returns a 4-digit number in the list
+    No duplicites, no zero on the [0] index
+    '''
+    print(f"I've generated a random 4 digit number for you.\n{separator}")
+    generated_number = str(set())
+    while len(generated_number) != 4 and generated_number[0] == "0":
+        generated_number = set(str(random.randrange(1111,9999)))
+    return list(generated_number)
 
-def generated_number(): #ošetřit na duplicity.. tuple
-    return str(random.randrange(1111, 9999))
-    
-
-
-
-def game():
-    greetings()
-    game_running = True
-    target_number = generated_number()
-    print(target_number)
-    while game_running:
-        users_number = input("Enter the 4-digit number: ")
-        if len(users_number) != 4 or not users_number.isdigit():
-            print("You've entered the wrong line!")
+def guessing_number(generated_number) -> int:
+    tries = 0
+    while True:
+        tries += 1
+        bulls = 0
+        cows = 0
+        user_input = list(input("Enter a 4-digit number: "))
+        if len(user_input) != 4 or user_input[0] == "0" or len(set(user_input)) != 4:
+            print("User input must always contain 4 digits, must not be duplicated and must not start with zero")
             continue
-        elif users_number == target_number:
-            print("Congratulation!")
-            game_running = False
-        target_number = [num for num in target_number]
-        print(target_number)
-        bulls = []
-        for number in users_number:#zjištění na počet bulls 
-            if number == target_number[0] or number == target_number[1] or number == target_number[2] or number == target_number[3]:
-                bulls.append(number)
-                
-            
-        print(len(bulls))
-        
+        elif user_input == generated_number:
+            print(f"Correct, you've guessed the right number in {tries} guesses!")
+            break
+        for number1, number2 in zip(user_input, generated_number):
+            if number1 == number2:
+                bulls += 1
+            elif number1 in generated_number:
+                cows += 1
+        if (bulls == 1 or cows == 1):
+            print(f"{bulls} bull {cows} cow --> Tries : {tries}\n{separator}")
+        else:
+            print(f"{bulls} bulls {cows} cows--> Tries : {tries}\n{separator}")
+    return tries
+
+def result_of_game(tries : int):
+    if tries >= 1 and tries <= 7:
+        print("Excellent result!")
+    elif tries >= 8 and tries <= 15:
+        print("Good result!")
+    else:
+        print("It could be better, lets try again")
+
+
+def play_again():
+    while True:
+        game_reset = input("If you wanna play again, press Y, otherwise, press N: ").lower()
+        if game_reset == "y":
+            break
+        elif game_reset == "n":
+            exit()
+        else:
+            print("You have pressed the wrong character!")
+            continue
+
+
+
+def main():
+    #pozdrav
+    greetings()
+    #vygenerování čísla
+    generated_number = generating_number()
+    #vyhodnocení uživatelského čísla
+    game = guessing_number(generated_number)
+    #podle počtu pokusů
+    result_of_game(game)
+    #hrát znova?
+    play_again()
 
 
 
 
-        
+main()
 
-game()
-
+if __name__ == "__main__":
+    main()
